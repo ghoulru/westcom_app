@@ -1,0 +1,57 @@
+@import 'mixins.less';
+@import 'config.less';
+/*
+   statusbar-overlay sets the background color for the overlay. Black text is the default when the statusbar plugin is not added. When the
+   statusbar plugin is added, it also adds default setting to make the content white via:
+
+       <preference name="StatusBarStyle" value="lightcontent"/>
+
+   Setting the background color to black will allow the default light content (white text/icons) to show on it. The statusbar plugin is included
+   in the config.xml file and will be added by the CLI when you build locally.
+
+   See https://github.com/apache/cordova-plugin-statusbar
+*/
+
+.statusbar-overlay {
+  background: #000000;
+}
+.navbar {
+  .bgr(@orangeColor);
+  .clr(@gBgr);
+  a {
+    .clr(#fff);
+  }
+}
+i.icon.icon-cart {
+  width: 29px;
+  height: 29px;
+  background-image: url("../img/cart.svg");
+}
+a {
+  .clr(@linkColor);
+}
+.back.link {
+  .fSize(12px);
+}
+.navbar-cart {
+  .relative;
+  @_size: 16px;
+  > div {
+    .absolute;
+    right: -5px;
+    top: -5px;
+    .z(10);
+    .fSize(11px);
+    .dInline;
+    background: rgba(255, 255, 255, 0.8);
+    .clr(#000);
+    .wMin(@_size);
+    .h(@_size);
+    .baradius(@_size/2);
+    .lh(@_size);
+    .tCenter;
+  }
+}
+#btn-back {
+  .dNone;
+}
