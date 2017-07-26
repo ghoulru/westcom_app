@@ -11,7 +11,13 @@
 
    See https://github.com/apache/cordova-plugin-statusbar
 */
-
+body {
+  .clr(@gColor);
+  .fSize(@txtSize);
+}
+.content-block {
+  margin: 15px 0;
+}
 .statusbar-overlay {
   background: #000000;
 }
@@ -33,25 +39,131 @@ a {
 .back.link {
   .fSize(12px);
 }
-.navbar-cart {
-  .relative;
-  @_size: 16px;
-  > div {
-    .absolute;
-    right: -5px;
-    top: -5px;
-    .z(10);
-    .fSize(11px);
-    .dInline;
-    background: rgba(255, 255, 255, 0.8);
-    .clr(#000);
-    .wMin(@_size);
-    .h(@_size);
-    .baradius(@_size/2);
-    .lh(@_size);
-    .tCenter;
+.flx {
+  .dFlex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  &.-sa {
+    justify-content: space-around;
+  }
+  &.-sb {
+    justify-content: space-between;
+  }
+  &.-c {
+    justify-content: center;
   }
 }
+.btn-bgr {
+  background: #f7f7f7 linear-gradient(to bottom, #fff 0%, #ededed 100%);
+  &:hover {
+    .bgr(@orangeColor);
+    .clr(#fff);
+  }
+}
+._pz {
+  p {
+    .mOne(0);
+  }
+}
+
+
+
+
 #btn-back {
-  .dNone;
+  opacity: 0;
+}
+@headerBgr: #fff;
+.header {
+  .relative;
+  background: url(../img/noisy.png);
+  background: url(../img/cloth_shop.png) center center;
+  //.bgr(@headerBgr);
+  background-size: 100% auto;
+  .hMin(100px);
+
+
+
+}
+.logo {
+  @logoDelta: 138px/75px;
+  @logoW: 100px;
+  @logoH: @logoW / @logoDelta;
+
+
+  .absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  .dInline;
+  .box(@logoW, @logoH);
+  background: url(../img/logo.png) center center no-repeat;
+  background-size: cover;
+}
+.hdr-actions {
+  .dInline;
+  .pTwo(5px, 25px);
+  .absolute;
+  .bgr(#B5E61D);
+  right: 0;
+  //top: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  //.border(@borderColor);
+  .bradius(5px, 0, 0, 5px);
+}
+
+.hmenu-1 {
+  .bgr(@headerBgr);
+  > div {
+    .pTwo(5px, 0);
+    .w(50%);
+    .tCenter;
+  }
+  a {
+    //.tdUnd;
+    .clr(@orangeColor);
+  }
+}
+.hdr-conts {
+  .bgr(@bgrContent);
+  align-items: center;
+  padding: 5px 5px 5px 10px;
+  i {
+    .vmiddle;
+    .mRight(10px);
+    .clr(@orangeColor);
+  }
+  a {
+    .mRight(10px);
+  }
+}
+.hmenu-2 {
+  align-content: center;
+  .bb(@borderColor);
+  @bord: @bgrContent;
+
+  @spacerW: 0.3%;
+  .space {
+    .w(@spacerW);
+    .bgr(#fff);
+    .bt(@bord);
+  }
+  @items: 3;
+  @spacers: @items - 1;
+  a {
+    .w( (100 - @spacers * @spacerW) / @items);
+    .tCenter;
+    .pTwo(8px, 0px);
+    .bt(@bord);
+    .fRel(13px);
+
+  }
+}
+#catalog-menu {
+  li {
+    //.bgr(#000)
+  }
+  i {
+    .clr(#000);
+  }
 }

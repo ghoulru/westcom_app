@@ -1,3 +1,13 @@
+// If we need to use custom DOM library, let's save it to $$ variable:
+var $$ = Dom7;
+//
+var Config = {
+    notifications: {
+        titleError : "Ошибка",
+        titleAlert: "Внимание!"
+    }
+};
+var isFirstRun = false;
 // Initialize app
 var myApp = new Framework7({
     pushState: true,
@@ -6,7 +16,7 @@ var myApp = new Framework7({
     panelLeftBreakpoint: 700,
     modalCloseByOutside: true,//разрешаем закрытие модальных окон по клику на поле за его пределами
     showBarsOnPageScrollTop: false,
-
+    //swipePanel: 'left',//для пенелей
 
     onAjaxStart: function (xhr) {
         myApp.showIndicator();
@@ -17,44 +27,90 @@ var myApp = new Framework7({
 });
 
 
-// If we need to use custom DOM library, let's save it to $$ variable:
-var $$ = Dom7;
-
 // Add view
 var mainView = myApp.addView('.view-main', {
     // Because we want to use dynamic navbar, we need to enable it for this view:
     //dynamicNavbar: true
 });
 
-var txt = $('.page-content');
+var Log = $$('#log');
+//myApp.openPanel('left', false);
 
-$$(document).on('deviceready', function() {
-    console.log("Device is ready!");
+document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("resume", onResume, false);
+//setOnline();
+//setOffline();
 
-    if( DBStorage.init() ){
+function onDeviceReady() {
+
+    Log.append("Device is ready");
+
+    if( DBStorage.init() ) {
 
         var isFirstRun = localStorage.getItem("isFirstRun");
 
-        if( isFirstRun == null || isFirstRun == 'true'){
+        if (isFirstRun == null || isFirstRun == 'true')
+            isFirstRun = true;
+
+        if (isFirstRun) {
             //DBStorage.dropTbl(DBStorage.ordersTbl);
             //DBStorage.dropTbl(DBStorage.customersTbl);
             DBStorage.createTablesIfNotExists();
             localStorage.setItem("isFirstRun", false);
         }
+    }
+    setOnline();
+    setOffline();
+
+    generateCatalogMenu();
+}
+generateCatalogMenu();
+function onResume() {
+    Log.append("Device resume");
+    setOnline();
+    setOffline();
+}
+
+function setOnline() {
+    document.addEventListener("online", isOnline, false);
+
+    function isOnline() {
+        setPageTile('online');
 
     }
-});
-$$(document).on('resume', function() {
-    txt.html('resume');
-});
-$$(document).on('online', function() {
-    console.log('online');
-    txt.html('online');
-});
-$$(document).on('offline', function() {
-    console.log('offline');
-    txt.html('offline');
-});
+}
+function setOffline() {
+    document.addEventListener("offline", isOffline, false);
+
+    function isOffline() {
+        navigator.notification.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', null, Config.notifications.titleAlert);
+        //myApp.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', Config.notifications.titleAlert);
+    }
+
+}
+
+function generateCatalogMenu() {
+    var compiledCatItem = Template7.compile(Tpl.catalogMenuItem);
+    var catMenu = {
+        menu: [
+            {
+                name: "Название",
+                url: ""
+            },
+
+        ]
+    }
+    for (var i = 0; i< 10; i++) {
+        var itm = {
+                name: "Название " + i,
+                url: ""
+            };
+        catMenu.menu.push(itm);
+    }
+    var item = compiledCatItem(catMenu);
+    //Log.html(item);
+    $$('#catalog-menu').html(item);
+}
 //setPageTile('Главная');
 
 var buttonBack = $$('#btn-back');

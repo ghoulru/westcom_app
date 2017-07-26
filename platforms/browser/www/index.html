@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.css">
 
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/framework7-icons.css">
 </head>
 
 <body>
@@ -40,9 +41,35 @@
     <!-- Panels overlay-->
     <div class="panel-overlay"></div>
     <!-- Left panel with reveal effect-->
-    <div class="panel panel-left panel-reveal">
-        <div class="content-block">
+    <div class="panel panel-left Xpanel-reveal panel-cover">
+        <!--<div class="content-block" id="catalog-menu">
             <p>Left panel content goes here</p>
+        </div>-->
+        <div class="content-block-title">Каталог</div>
+        <div class="list-block">
+            <ul id="catalog-menu">
+                <li>
+                    <div class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Специальные предложения!</div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Специальные предложения! 2</div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">Специальные предложения!</div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -53,8 +80,8 @@
             <!-- Top Navbar-->
             <div class="navbar">
                 <div class="navbar-inner">
-                    <div class="left" id="btn-back">
-                        <a href="#" class="back link">
+                    <div class="left">
+                        <a href="#" class="back link" id="btn-back">
                             <i class="icon icon-back"></i>
                             <span>Назад</span>
                         </a>
@@ -69,10 +96,9 @@
                         <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
 
                         <a href="#" class="open-panel navbar-cart">
-                            <div>
-                                12
-                            </div>
-                            <i class="icon icon-cart"></i>
+                            <i class="icon icon-cart">
+                                <span class="badge bg-red">5</span>
+                            </i>
                         </a>
                     </div>
                 </div>
@@ -84,9 +110,35 @@
                     <!-- Scrollable page content -->
                     <div class="page-content">
 
-                        <div class="content-block" style="height: 1000px">
-                            <a href="about.html">about</a><br>
-                            <a href="inner.html">inner</a>
+                        <div class="header">
+                            <a href="index.html" class="logo"></a>
+                            <a href="actions.html" class="hdr-actions">Акции</a>
+                        </div>
+
+
+                        <div class="hdr-conts flx -c">
+                            <i class="f7-icons">phone_round_fill</i>
+                            <a href="tel:+74952343210" class="external">+7 (495) 234-32-10</a>
+                            <a href="tel:8-800-301-02-66" class="external">8-800-301-02-66</a>
+                        </div>
+                        <div class="hmenu-1 flx -sb">
+                            <div><a href="">Готовые проекты </a></div>
+                            <div><a href="">Цветовая палитра ДСП</a></div>
+                        </div>
+                        <div class="hmenu-2 flx -sb">
+                            <a href="" class="btn-bgr">Вызов замерщика</a>
+                            <div class="space"></div>
+                            <a href="" class="btn-bgr">Доставка</a>
+                            <div class="space"></div>
+                            <a href="" class="btn-bgr">Контакты</a>
+                        </div>
+
+
+                        <div class="content-block">
+
+                        </div>
+                        <div class="log" id="log">
+                            log
                         </div>
 
                     </div>
@@ -99,6 +151,9 @@
     <!--<script type="text/javascript" src="../platforms/browser/www/cordova.js"></script>-->
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+    <script type="text/javascript" src="js/db_create_tables.js"></script>
+    <script type="text/javascript" src="js/db_storage.js"></script>
+    <script type="text/javascript" src="js/templates.js"></script>
     <script type="text/javascript" src="js/my-app.js"></script>
 </body>
 

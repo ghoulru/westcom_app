@@ -1,3 +1,13 @@
+// If we need to use custom DOM library, let's save it to $$ variable:
+var $$ = Dom7;
+//
+var Config = {
+    notifications: {
+        titleError : "Ошибка",
+        titleAlert: "Внимание!"
+    }
+};
+var isFirstRun = false;
 // Initialize app
 var myApp = new Framework7({
     pushState: true,
@@ -6,7 +16,7 @@ var myApp = new Framework7({
     panelLeftBreakpoint: 700,
     modalCloseByOutside: true,//разрешаем закрытие модальных окон по клику на поле за его пределами
     showBarsOnPageScrollTop: false,
-
+    //swipePanel: 'left',//для пенелей
 
     onAjaxStart: function (xhr) {
         myApp.showIndicator();
@@ -17,62 +27,109 @@ var myApp = new Framework7({
 });
 
 
-// If we need to use custom DOM library, let's save it to $$ variable:
-var $$ = Dom7;
-
 // Add view
 var mainView = myApp.addView('.view-main', {
     // Because we want to use dynamic navbar, we need to enable it for this view:
     //dynamicNavbar: true
 });
 
+var Log = $$('#log');
+//myApp.openPanel('left', false);
 
+document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("resume", onResume, false);
+//setOnline();
+//setOffline();
 
-// Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
-    console.log("Device is ready!");
+function onDeviceReady() {
 
-});
+    Log.append("Device is ready");
+
+    if( DBStorage.init() ) {
+
+        var isFirstRun = localStorage.getItem("isFirstRun");
+
+        if (isFirstRun == null || isFirstRun == 'true')
+            isFirstRun = true;
+
+        if (isFirstRun) {
+            //DBStorage.dropTbl(DBStorage.ordersTbl);
+            //DBStorage.dropTbl(DBStorage.customersTbl);
+            DBStorage.createTablesIfNotExists();
+            localStorage.setItem("isFirstRun", false);
+        }
+    }
+    setOnline();
+    setOffline();
+
+    generateCatalogMenu();
+}
+generateCatalogMenu();
+function onResume() {
+    Log.append("Device resume");
+    setOnline();
+    setOffline();
+}
+
+function setOnline() {
+    document.addEventListener("online", isOnline, false);
+
+    function isOnline() {
+        setPageTile('online');
+
+    }
+}
+function setOffline() {
+    document.addEventListener("offline", isOffline, false);
+
+    function isOffline() {
+        navigator.notification.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', null, Config.notifications.titleAlert);
+        //myApp.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', Config.notifications.titleAlert);
+    }
+
+}
+
+function generateCatalogMenu() {
+    var compiledCatItem = Template7.compile(Tpl.catalogMenuItem);
+    var catMenu = {
+        menu: [
+            {
+                name: "Название",
+                url: ""
+            },
+
+        ]
+    }
+    for (var i = 0; i< 10; i++) {
+        var itm = {
+                name: "Название " + i,
+                url: ""
+            };
+        catMenu.menu.push(itm);
+    }
+    var item = compiledCatItem(catMenu);
+    //Log.html(item);
+    $$('#catalog-menu').html(item);
+}
 //setPageTile('Главная');
 
-var buttonBack = $$('#bnt-back');
+var buttonBack = $$('#btn-back');
 
-$$(document).on('page:init', function (e) {
-    var page = e.detail.page;
-
-    console.log(page);
-
+myApp.onPageBeforeAnimation('*', function(page){
     if (page.name == 'index')
-        buttonBack.hide();
+        buttonBack.css('opacity', '0');
     else
-        buttonBack.show();
-
+        buttonBack.css('opacity', '1');
 });
 
 // Now we need to run the code that will be executed only for About page.
 
 // Option 1. Using page callback for page (for "about" page in this case) (recommended way):
-myApp.onPageInit('about', function (page) {
+/*myApp.onPageInit('about', function (page) {
     // Do something here for "about" page
     console.log('about init');
-});
-
-// Option 2. Using one 'pageInit' event handler for all pages:
-/*$$(document).on('pageInit', function (e) {
-    // Get page data from event data
-    var page = e.detail.page;
-
-    if (page.name === 'about') {
-        // Following code will be executed for page with data-page attribute equal to "about"
-        //myApp.alert('Here comes About page');
-    }
 });*/
 
-// Option 2. Using live 'pageInit' event handlers for each page
-/*$$(document).on('pageInit', '.page[data-page="about"]', function (e) {
-    // Following code will be executed for page with data-page attribute equal to "about"
-    //myApp.alert('Here comes About page');
-});*/
 
 function setPageTile(str) {
     $$('.js-app-name').html(str);
