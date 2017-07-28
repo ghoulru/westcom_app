@@ -40,11 +40,11 @@ document.addEventListener("deviceready", onDeviceReady, false);
 document.addEventListener("resume", onResume, false);
 //setOnline();
 //setOffline();
-
+//document.addEventListener("online", isOnline, false);
 function onDeviceReady() {
 
     Log.append("Device is ready");
-
+    document.addEventListener("online", isOnline, false);
     if( DBStorage.init() ) {
 
         var isFirstRun = localStorage.getItem("isFirstRun");
@@ -59,33 +59,34 @@ function onDeviceReady() {
             localStorage.setItem("isFirstRun", false);
         }
     }
-    setOnline();
+    //setOnline();
     setOffline();
 
     generateCatalogMenu();
 }
-generateCatalogMenu();
+//generateCatalogMenu();
 function onResume() {
     Log.append("Device resume");
-    setOnline();
-    setOffline();
+    //setOnline();
+    //setOffline();
+    
 }
-
+function isOnline() {
+    //setPageTile('online');
+    Log.append("<br>online");
+}
 function setOnline() {
-    document.addEventListener("online", isOnline, false);
-
-    function isOnline() {
-        setPageTile('online');
-
-    }
+    //document.addEventListener("online", isOnline, false);
+}
+function isOffline() {
+    setPageTile('offline');
+    navigator.notification.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', null, Config.notifications.titleAlert);
+    //myApp.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', Config.notifications.titleAlert);
 }
 function setOffline() {
     document.addEventListener("offline", isOffline, false);
 
-    function isOffline() {
-        navigator.notification.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', null, Config.notifications.titleAlert);
-        //myApp.alert('Отсутствует интернет-соединение. Обновление цен и заказ товаров невозможны.', Config.notifications.titleAlert);
-    }
+
 
 }
 
